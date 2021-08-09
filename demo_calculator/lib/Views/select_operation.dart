@@ -1,4 +1,7 @@
+import 'package:demo_calculator/Configurations/config.dart';
+import 'package:demo_calculator/Views/squareroot_operand.dart';
 import 'package:flutter/material.dart';
+import 'first_operand.dart';
 
 class SelectOperation extends StatefulWidget {
   @override
@@ -6,47 +9,58 @@ class SelectOperation extends StatefulWidget {
 }
 
 class _SelectOperationState extends State<SelectOperation> {
-  List<String> text = ["Add", "Subtract", "Multiple", "Divide", "Squareroot"];
+  List<String> text = Config.operatorList;
 
-  void selectScreenType(String _selectedOperator) {
-    if (_selectedOperator == text[text.length - 1]) {
-      print (_selectedOperator);
+  void selectScreenType(String _selectedOperator, BuildContext _context) {
+    if (_selectedOperator != text[text.length - 1]) {
+      print(_selectedOperator);
+      Navigator.push(
+          _context,
+          MaterialPageRoute(
+              builder: (_context) =>
+                  FirstOperand(selectedOperator: _selectedOperator)));
     } else {
-      print (_selectedOperator);
+      print(_selectedOperator);
+      Navigator.push(
+          _context,
+          MaterialPageRoute(
+              builder: (_context) =>
+                  SquareRootOperand(selectedOperator: _selectedOperator)));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text("Select Operation"),
+        //App Bar text
+        title: Text(Config.selectionScreenName),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          //Buttons to press
           children: <Widget>[
             for (var txt in text)
               Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(10),
-                width: 120,
-                color: Colors.blue,
+                padding: EdgeInsets.all(Config.buttonContainerPadding),
+                margin: EdgeInsets.all(Config.buttonContainerMargin),
+                width: Config.buttonWidth,
+                //color: Colors.blue,
                 child: TextButton(
                   onPressed: () {
-                    selectScreenType(txt.toString());
+                    selectScreenType(txt.toString(), context);
                   },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: Colors.blue))),
+                  ),
                   child: Text(
                     txt.toString(),
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(
+                        color: Colors.blue, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
