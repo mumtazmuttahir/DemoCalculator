@@ -1,7 +1,7 @@
 import 'package:demo_calculator/Configurations/config.dart';
 import 'package:demo_calculator/Views/squareroot_operand.dart';
 import 'package:flutter/material.dart';
-import 'first_operand.dart';
+import 'operand.dart';
 
 class SelectOperation extends StatefulWidget {
   @override
@@ -14,18 +14,25 @@ class _SelectOperationState extends State<SelectOperation> {
   void selectScreenType(String _selectedOperator, BuildContext _context) {
     if (_selectedOperator != text[text.length - 1]) {
       print(_selectedOperator);
-      Navigator.push(
-          _context,
+      Navigator.pushAndRemoveUntil(
+          context,
           MaterialPageRoute(
-              builder: (_context) =>
-                  FirstOperand(selectedOperator: _selectedOperator)));
+            builder: (context) => Operand(
+              selectedOperator: _selectedOperator,
+              firstOperand: 0.0,
+              visitNumber: 1,
+            ),
+          ),
+          (route) => false);
     } else {
       print(_selectedOperator);
-      Navigator.push(
-          _context,
+      Navigator.pushAndRemoveUntil(
+          context,
           MaterialPageRoute(
-              builder: (_context) =>
-                  SquareRootOperand(selectedOperator: _selectedOperator)));
+            builder: (context) =>
+                SquareRootOperand(selectedOperator: _selectedOperator),
+          ),
+          (route) => false);
     }
   }
 
@@ -54,7 +61,7 @@ class _SelectOperationState extends State<SelectOperation> {
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
+                            borderRadius: BorderRadius.circular(Config.buttonBorderRadius),
                             side: BorderSide(color: Colors.blue))),
                   ),
                   child: Text(

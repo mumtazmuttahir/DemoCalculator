@@ -1,3 +1,4 @@
+import 'package:demo_calculator/Configurations/config.dart';
 import 'package:demo_calculator/Views/result.dart';
 import 'package:demo_calculator/Widgets/number_textfield.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
     return Scaffold(
       appBar: AppBar(
         //App Bar text
-        title: Text("Square Root"),
+        title: Text(Config.squareRootScreenName),
       ),
       body: Center(
         child: Column(
@@ -56,23 +57,7 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
               onPressed: () {
                 if (isEmpty(controller.text)) {
                   // show the dialog
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: new Text("Alert!!"),
-                        content: new Text("Please enter a number"),
-                        actions: <Widget>[
-                          new FlatButton(
-                            child: new Text("OK"),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  _showDialog ();
                 } else if (num.parse(controller.text) is num) {
                   double squareRoot = sqrt(num.parse(controller.text));
                   Navigator.pushAndRemoveUntil(
@@ -83,11 +68,37 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
                       (route) => false);
                 }
               },
-              child: Text("Text"),
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(Config.buttonBorderRadius),
+                        side: BorderSide(color: Colors.blue))),
+              ),
+              child: Text(Config.toResult),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text(Config.alertContent),
+          content: new Text(Config.enterNumberContent),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(Config.okButton),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

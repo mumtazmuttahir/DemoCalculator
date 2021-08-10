@@ -1,9 +1,6 @@
 import 'package:demo_calculator/Configurations/config.dart';
 import 'package:demo_calculator/Views/select_operation.dart';
-import 'package:demo_calculator/Widgets/number_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:math';
 
 class Result extends StatelessWidget {
   double result = 0.0;
@@ -37,11 +34,11 @@ class Result extends StatelessWidget {
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
+                        borderRadius: BorderRadius.circular(Config.buttonBorderRadius),
                         side: BorderSide(color: Colors.blue))),
               ),
               child: Text(
-                "Back to Selection",
+                Config.toOperationSelection,
                 style: TextStyle(
                     color: Colors.blue, fontWeight: FontWeight.bold),
               ),
