@@ -23,9 +23,9 @@ class Result extends StatelessWidget {
           //Buttons to press
           children: <Widget>[
             if (operationType == Config.operatorList[Config.operatorList.length - 1])
-              Text("The Square Root is = " + result.toString()),
+              Text(Config.squareRootResult + result.toString()),
             if (operationType != Config.operatorList[Config.operatorList.length - 1])
-              Text("The Result is = " + result.toString()),
+              Text(Config.otherOperationsResult + result.toString()),
             TextButton(
               onPressed: () {
                 Navigator.pushReplacement(context,

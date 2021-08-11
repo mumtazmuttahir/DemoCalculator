@@ -29,4 +29,15 @@ class Config {
   static const enterNumberContent = "Please Enter a Number";
   static const enterNonZeroDenominator = "Denominator cannot not be 0";
   static const alertContent = "Alert!!";
+
+  //Result screen
+  static const squareRootResult = "The Square Root is = ";
+  static const otherOperationsResult = "The Result is = ";
+
+  //Number of time Operand screen is visited
+  static const firstVisit = 1;
+  static const secondVisit = 2;
+
+  //Label Texts
+  static const enterNumberText = "Enter your number";
 }

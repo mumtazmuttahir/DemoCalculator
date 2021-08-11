@@ -49,7 +49,7 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
           children: <Widget>[
             TextField(
               controller: controller,
-              decoration: new InputDecoration(labelText: "Enter your number"),
+              decoration: new InputDecoration(labelText: Config.enterNumberText),
               keyboardType:
                   TextInputType.numberWithOptions(signed: false, decimal: true),
             ),

@@ -20,7 +20,7 @@ class _SelectOperationState extends State<SelectOperation> {
             builder: (context) => Operand(
               selectedOperator: _selectedOperator,
               firstOperand: 0.0,
-              visitNumber: 1,
+              visitNumber: Config.firstVisit,
             ),
           ),
           (route) => false);

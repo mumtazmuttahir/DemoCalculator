@@ -1,4 +1,5 @@
 import 'package:demo_calculator/Configurations/config.dart';
+import 'package:demo_calculator/Models/calculator.dart';
 import 'package:demo_calculator/Views/result.dart';
 import 'package:demo_calculator/Views/select_operation.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class _OperandState extends State<Operand> {
           children: <Widget>[
             TextField(
               controller: controller,
-              decoration: new InputDecoration(labelText: "Enter your number"),
+              decoration: new InputDecoration(labelText: Config.enterNumberText),
               keyboardType:
                   TextInputType.numberWithOptions(signed: false, decimal: true),
             ),
@@ -129,39 +130,43 @@ class _OperandState extends State<Operand> {
           builder: (context) => Operand(
             selectedOperator: widget.selectedOperator,
             firstOperand: double.parse(controller.text),
-            visitNumber: 2,
+            visitNumber: Config.secondVisit,
           ),
         ),
         (route) => false);
   }
 
   void _ifSecondOperand() {
+
     double number = 0.0;
+
     if (widget.selectedOperator.contains("Divide") &&
         double.parse(controller.text) == 0.0) {
       _showDialog(Config.enterNonZeroDenominator, Config.okButton);
       return;
     }
 
+    Calculator calculator = new Calculator(widget.firstOperand, double.parse(controller.text));
+
     switch (widget.selectedOperator) {
       case ("Add"):
         {
-          number = widget.firstOperand + double.parse(controller.text);
+          number = calculator.add();
           break;
         }
       case ("Subtract"):
         {
-          number = widget.firstOperand - double.parse(controller.text);
+          number = calculator.subtract();
           break;
         }
       case ("Multiple"):
         {
-          number = widget.firstOperand * double.parse(controller.text);
+          number = calculator.multiply();
           break;
         }
       case ("Divide"):
         {
-          number = widget.firstOperand / double.parse(controller.text);
+          number = calculator.divide();
           break;
         }
       default:
