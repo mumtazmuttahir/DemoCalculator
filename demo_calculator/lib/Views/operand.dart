@@ -51,16 +51,18 @@ class _OperandState extends State<Operand> {
           mainAxisAlignment: MainAxisAlignment.center,
           //Buttons to press
           children: <Widget>[
+            //To enter the number
             TextField(
               controller: controller,
               decoration: new InputDecoration(labelText: Config.enterNumberText),
               keyboardType:
                   TextInputType.numberWithOptions(signed: false, decimal: true),
             ),
+            //Second Operand/Result Screen Button
             TextButton(
               onPressed: () {
-                if (isEmpty(controller.text)) {
-                  _showDialog(Config.enterNumberContent, Config.okButton);
+                if (isEmpty(controller.text) || double.tryParse(controller.text) == null) {
+                  _showDialog(Config.alertContent, Config.enterNumberContent, Config.okButton);
                 } else if (num.parse(controller.text) is num) {
                   if (widget.visitNumber == 1) {
                     _ifFirstOperand();
@@ -80,6 +82,7 @@ class _OperandState extends State<Operand> {
                   ? Text(Config.toSecondOperand)
                   : Text(Config.toResult),
             ),
+            //Selection Operation Screen Button
             TextButton(
               onPressed: () {
                 _goToSelectionOperationMenu();
@@ -103,12 +106,13 @@ class _OperandState extends State<Operand> {
     );
   }
 
-  void _showDialog(String _contentText, String _buttonText) {
+  //Show the dialog if the textfield is empty
+  void _showDialog(String _alert, String _contentText, String _buttonText) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text(Config.alertContent),
+          title: new Text(_alert),
           content: new Text(_contentText),
           actions: <Widget>[
             new FlatButton(
@@ -142,7 +146,7 @@ class _OperandState extends State<Operand> {
 
     if (widget.selectedOperator.contains("Divide") &&
         double.parse(controller.text) == 0.0) {
-      _showDialog(Config.enterNonZeroDenominator, Config.okButton);
+      _showDialog(Config.alertContent, Config.enterNonZeroDenominator, Config.okButton);
       return;
     }
 

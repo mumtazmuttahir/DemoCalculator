@@ -15,7 +15,6 @@ class SquareRootOperand extends StatefulWidget {
   }
 
   _SquareRootOperandState createState() => _SquareRootOperandState();
-
 }
 
 class _SquareRootOperandState extends State<SquareRootOperand> {
@@ -36,6 +35,34 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
     return false;
   }
 
+  String value = '';
+  String output = 'Not Checked';
+
+  checkTextInputData() {
+    setState(() {
+      value = controller.text;
+    });
+
+    print(_isNumeric(value));
+
+    if (_isNumeric(value) == true) {
+      setState(() {
+        output = 'Value is Number';
+      });
+    } else {
+      setState(() {
+        output = 'Value is Not Number';
+      });
+    }
+  }
+
+  bool _isNumeric(String result) {
+    if (result == null) {
+      return false;
+    }
+    return double.tryParse(result) != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,21 +77,26 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
           children: <Widget>[
             TextField(
               controller: controller,
-              decoration: new InputDecoration(labelText: Config.enterNumberText),
+              decoration:
+                  new InputDecoration(labelText: Config.enterNumberText),
               keyboardType:
                   TextInputType.numberWithOptions(signed: false, decimal: true),
             ),
             TextButton(
               onPressed: () {
-                if (isEmpty(controller.text)) {
+                if (isEmpty(controller.text) || double.tryParse(controller.text) == null) {
                   // show the dialog
-                  _showDialog ();
+                  _showDialog(Config.alertContent, Config.enterNumberContent,
+                      Config.okButton);
                 } else if (num.parse(controller.text) is num) {
                   double squareRoot = sqrt(num.parse(controller.text));
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Result(result: squareRoot, operationType: widget.selectedOperator,),
+                        builder: (context) => Result(
+                          result: squareRoot,
+                          operationType: widget.selectedOperator,
+                        ),
                       ),
                       (route) => false);
                 }
@@ -72,7 +104,8 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(Config.buttonBorderRadius),
+                        borderRadius:
+                            BorderRadius.circular(Config.buttonBorderRadius),
                         side: BorderSide(color: Colors.blue))),
               ),
               child: Text(Config.toResult),
@@ -85,13 +118,13 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius:
-                        BorderRadius.circular(Config.buttonBorderRadius),
+                            BorderRadius.circular(Config.buttonBorderRadius),
                         side: BorderSide(color: Colors.blue))),
               ),
               child: Text(
                 Config.toOperationSelection,
                 style:
-                TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                    TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               ),
             ),
           ],
@@ -100,16 +133,18 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
     );
   }
 
-  void _showDialog() {
+  //Show the
+  void _showDialog(
+      String _alertContent, String _enterNumberContent, String _okButton) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: new Text(Config.alertContent),
-          content: new Text(Config.enterNumberContent),
+          title: new Text(_alertContent),
+          content: new Text(_enterNumberContent),
           actions: <Widget>[
             new FlatButton(
-              child: new Text(Config.okButton),
+              child: new Text(_okButton),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -120,8 +155,9 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
     );
   }
 
+  //Navigate the user to the Selection Operator Screen
   void _goToSelectionOperationMenu() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => SelectOperation()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SelectOperation()));
   }
 }

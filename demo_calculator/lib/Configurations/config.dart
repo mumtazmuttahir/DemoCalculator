@@ -26,7 +26,7 @@ class Config {
 
   //Alert Content
   static const okButton = "OK";
-  static const enterNumberContent = "Please Enter a Number";
+  static const enterNumberContent = "Please enter a valid number";
   static const enterNonZeroDenominator = "Denominator cannot not be 0";
   static const alertContent = "Alert!!";
 
