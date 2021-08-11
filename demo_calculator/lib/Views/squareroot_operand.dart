@@ -1,5 +1,6 @@
 import 'package:demo_calculator/Configurations/config.dart';
 import 'package:demo_calculator/Views/result.dart';
+import 'package:demo_calculator/Views/select_operation.dart';
 import 'package:demo_calculator/Widgets/number_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -76,6 +77,23 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
               ),
               child: Text(Config.toResult),
             ),
+            TextButton(
+              onPressed: () {
+                _goToSelectionOperationMenu();
+              },
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(Config.buttonBorderRadius),
+                        side: BorderSide(color: Colors.blue))),
+              ),
+              child: Text(
+                Config.toOperationSelection,
+                style:
+                TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+              ),
+            ),
           ],
         ),
       ),
@@ -100,5 +118,10 @@ class _SquareRootOperandState extends State<SquareRootOperand> {
         );
       },
     );
+  }
+
+  void _goToSelectionOperationMenu() {
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => SelectOperation()));
   }
 }
