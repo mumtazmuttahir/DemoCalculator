@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:demo_calculator/Configurations/config.dart';
 import 'package:demo_calculator/Models/calculator.dart';
 import 'package:demo_calculator/Views/result.dart';
@@ -42,8 +44,10 @@ class _OperandState extends State<Operand> {
     return Scaffold(
       appBar: AppBar(
         //App Bar text
-        title: widget.firstOperand <= 1
-            ? Text(Config.firstOperandScreenName)
+        title: widget.visitNumber == 1
+            ? (widget.selectedOperator == "Squareroot"
+                ? Text(Config.squareRootScreenName)
+                : Text(Config.firstOperandScreenName))
             : Text(Config.secondOperandScreenName),
       ),
       body: Center(
@@ -54,18 +58,26 @@ class _OperandState extends State<Operand> {
             //To enter the number
             TextField(
               controller: controller,
-              decoration: new InputDecoration(labelText: Config.enterNumberText),
+              decoration:
+                  new InputDecoration(labelText: Config.enterNumberText),
               keyboardType:
                   TextInputType.numberWithOptions(signed: false, decimal: true),
             ),
             //Second Operand/Result Screen Button
             TextButton(
               onPressed: () {
-                if (isEmpty(controller.text) || double.tryParse(controller.text) == null) {
-                  _showDialog(Config.alertContent, Config.enterNumberContent, Config.okButton);
+                if (isEmpty(controller.text) ||
+                    double.tryParse(controller.text) == null) {
+                  _showDialog(Config.alertContent, Config.enterNumberContent,
+                      Config.okButton);
                 } else if (num.parse(controller.text) is num) {
-                  if (widget.visitNumber == 1) {
-                    _ifFirstOperand();
+                  print("operand = " + widget.selectedOperator);
+                  if (widget.visitNumber <= 1) {
+                    if (widget.selectedOperator == "Squareroot"){
+                      _ifSquareRootOperand();
+                    } else {
+                      _ifFirstOperand();
+                    }
                   } else {
                     _ifSecondOperand();
                   }
@@ -78,8 +90,8 @@ class _OperandState extends State<Operand> {
                             BorderRadius.circular(Config.buttonBorderRadius),
                         side: BorderSide(color: Colors.blue))),
               ),
-              child: widget.firstOperand <= 1
-                  ? Text(Config.toSecondOperand)
+              child: widget.visitNumber == 1
+                  ? (widget.selectedOperator == "Squareroot" ?Text(Config.toResult):Text(Config.toSecondOperand))
                   : Text(Config.toResult),
             ),
             //Selection Operation Screen Button
@@ -127,6 +139,19 @@ class _OperandState extends State<Operand> {
     );
   }
 
+  void _ifSquareRootOperand() {
+    double squareRoot = sqrt(num.parse(controller.text));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Result(
+            result: squareRoot,
+            operationType: widget.selectedOperator,
+          ),
+        ),
+            (route) => false);
+  }
+
   void _ifFirstOperand() {
     Navigator.pushAndRemoveUntil(
         context,
@@ -141,16 +166,17 @@ class _OperandState extends State<Operand> {
   }
 
   void _ifSecondOperand() {
-
     double number = 0.0;
 
     if (widget.selectedOperator.contains("Divide") &&
         double.parse(controller.text) == 0.0) {
-      _showDialog(Config.alertContent, Config.enterNonZeroDenominator, Config.okButton);
+      _showDialog(
+          Config.alertContent, Config.enterNonZeroDenominator, Config.okButton);
       return;
     }
 
-    Calculator calculator = new Calculator(widget.firstOperand, double.parse(controller.text));
+    Calculator calculator =
+        new Calculator(widget.firstOperand, double.parse(controller.text));
 
     switch (widget.selectedOperator) {
       case ("Add"):
@@ -190,7 +216,7 @@ class _OperandState extends State<Operand> {
   }
 
   void _goToSelectionOperationMenu() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (context) => SelectOperation()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SelectOperation()));
   }
 }
